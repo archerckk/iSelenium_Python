@@ -12,7 +12,8 @@ class ISelenium(unittest.TestCase):
     # 读入配置文件
     def get_config(self):
         config = configparser.ConfigParser()
-        config.read(os.path.join(os.environ['HOME'], 'iselenium.ini'))
+        # print("配置路径获取：",os.environ['HOMEPATH'])
+        config.read(os.path.join('..', 'iselenium.ini'))
         return config
 
     def tearDown(self):
@@ -20,6 +21,7 @@ class ISelenium(unittest.TestCase):
 
     def setUp(self):
         config = self.get_config()
+        # print("配置获取内容",config.has_section('driver'))
 
         # 控制是否采用无界面形式运行自动化测试
         try:
@@ -33,6 +35,7 @@ class ISelenium(unittest.TestCase):
             print('使用无界面方式运行')
             chrome_options.add_argument("--headless")
 
+        print(config.options('driver'))
         self.driver = webdriver.Chrome(executable_path=config.get('driver', 'chrome_driver'),
                                        options=chrome_options)
 
