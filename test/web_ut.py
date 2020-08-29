@@ -2,7 +2,7 @@ import configparser
 import os
 import time
 import unittest
-
+import sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
@@ -12,8 +12,12 @@ class ISelenium(unittest.TestCase):
     # 读入配置文件
     def get_config(self):
         config = configparser.ConfigParser()
-        # print("配置路径获取：",os.environ['HOMEPATH'])
-        config.read(os.path.join('..', 'iselenium.ini'))
+        if sys.platform=='win32':
+            os.environ['HOMEPATH']=r'C:\test' #修改系统返回的根目录的值
+            # print("配置路径获取：",os.environ['HOMEPATH']) #测试代码
+            config.read(os.path.join(os.environ['HOMEPATH'], 'iselenium.ini'))
+        else:
+            config.read(os.path.join(os.environ['HOME'], 'iselenium.ini'))
         return config
 
     def tearDown(self):
